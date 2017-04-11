@@ -22,16 +22,14 @@ const GAME_SETUP = {
 	},
 	PLAYER: {
 		type: 'player',
-		x: 0,
-		y: 0,
+		x: 18,
+		y: 84,
 		width: 32,
-		height: 32		
+		height: 32,
+		initialX: 64,
+		initialY: 64
 	}
 }
-
-var currentSecond = 0, 
-	frameCount = 0, 
-	framesLastSecond = 0;
 
 let gameMap = '';
 for(let i = 0; i < GAME_SETUP.MAP_WIDTH * GAME_SETUP.MAP_HEIGHT; i++) {
@@ -42,19 +40,7 @@ function getIndex(c, r) {
 	return gameMap[r * GAME_SETUP.MAP_WIDTH + c];
 }
 
-function fps() {
-	var sec = Math.floor(Date.now()/1000);
-	if(sec!=currentSecond) {
-		currentSecond = sec;
-		framesLastSecond = frameCount;
-		frameCount = 1;
-	} else { 
-		frameCount++; 
-	}   
-}
-
 function drawMap() {
-	fps();
 	for(let r = 0; r < GAME_SETUP.MAP_HEIGHT; r++) {
 		for(let c = 0; c < GAME_SETUP.MAP_WIDTH; c++) {
 			ctx.drawImage(
@@ -71,8 +57,38 @@ function drawMap() {
 		}
 	}
 
-	ctx.fillText("FPS: " + framesLastSecond, 10, 20);
 	requestAnimationFrame(drawMap);
+	addPlayer();
+}
+
+
+
+function getInitialCoords() {
+	let x = Math.floor(Math.random() * GAME_SETUP.MAP_WIDTH),
+		y = Math.floor(Math.random() * GAME_SETUP.MAP_HEIGHT);
+
+	if(getIndex(x, y) == 0) {
+		return {x, y};
+	} else {
+		getInitialCoords();
+	}
+}
+
+
+	let coords = getInitialCoords();
+
+function addPlayer() {
+	ctx.drawImage(
+		img, 
+		GAME_SETUP.PLAYER.x, 
+		GAME_SETUP.PLAYER.y, 
+		GAME_SETUP.PLAYER.width, 
+		GAME_SETUP.PLAYER.height,
+		coords.initialX * 32, 
+		coords.initialY * 32, 
+		GAME_SETUP.PLAYER.width, 
+		GAME_SETUP.PLAYER.height
+	);
 }
 
 window.onload = function() {
@@ -82,6 +98,7 @@ window.onload = function() {
 	img = new Image();
 	img.src = 'new-tiles.png';
 	img.onload = function() {
-		requestAnimationFrame(drawMap);     
+		requestAnimationFrame(drawMap);
+		  
 	}
 }
