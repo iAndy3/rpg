@@ -22,12 +22,10 @@ const GAME_SETUP = {
 	},
 	PLAYER: {
 		type: 'player',
-		x: 18,
-		y: 84,
-		width: 32,
+		x: 64,
+		y: 0,
+		width: 25,
 		height: 32,
-		initialX: 64,
-		initialY: 64
 	}
 }
 
@@ -39,6 +37,15 @@ for(let i = 0; i < GAME_SETUP.MAP_WIDTH * GAME_SETUP.MAP_HEIGHT; i++) {
 function getIndex(c, r) {
 	return gameMap[r * GAME_SETUP.MAP_WIDTH + c];
 }
+
+function getCoords(i) {
+	return {
+		x: i % GAME_SETUP.MAP_WIDTH,
+		y: Math.floor(i / GAME_SETUP.MAP_WIDTH)
+	}
+}
+
+let coords = getCoords(getInitialCoords(Math.floor(Math.random() * GAME_SETUP.MAP_WIDTH * GAME_SETUP.MAP_HEIGHT)));
 
 function drawMap() {
 	for(let r = 0; r < GAME_SETUP.MAP_HEIGHT; r++) {
@@ -61,22 +68,49 @@ function drawMap() {
 	addPlayer();
 }
 
+let movement = {
+	x: 32,
+	y:32
+}
 
-
-function getInitialCoords() {
-	let x = Math.floor(Math.random() * GAME_SETUP.MAP_WIDTH),
-		y = Math.floor(Math.random() * GAME_SETUP.MAP_HEIGHT);
-
-	if(getIndex(x, y) == 0) {
-		return {x, y};
+function getInitialCoords(i) {
+	if(gameMap[i] == 0) {
+		return i;
 	} else {
-		getInitialCoords();
+		return getInitialCoords(Math.floor(Math.random() * GAME_SETUP.MAP_WIDTH * GAME_SETUP.MAP_HEIGHT));
 	}
 }
 
+var Keyboard = {};
 
-	let coords = getInitialCoords();
+Keyboard.LEFT = 37;
+Keyboard.RIGHT = 39;
+Keyboard.UP = 38;
+Keyboard.DOWN = 40;
 
+Keyboard._keys = {};
+
+
+window.addEventListener('keydown', function(e) {
+	console.log(e);
+	switch(e.key) {
+		case 'ArrowUp':
+			movement.y-=2;
+			break;
+		case 'ArrowDown':
+			movement.y+=2;
+			break;
+		case 'ArrowRight':
+			movement.x+=2;
+			break;
+		case 'ArrowLeft':
+			movement.x-=2;
+			break;
+	}
+	e.preventDefault();
+})
+
+console.log(coords);
 function addPlayer() {
 	ctx.drawImage(
 		img, 
@@ -84,8 +118,8 @@ function addPlayer() {
 		GAME_SETUP.PLAYER.y, 
 		GAME_SETUP.PLAYER.width, 
 		GAME_SETUP.PLAYER.height,
-		coords.initialX * 32, 
-		coords.initialY * 32, 
+		coords.x * movement.x, 
+		coords.y * movement.y, 
 		GAME_SETUP.PLAYER.width, 
 		GAME_SETUP.PLAYER.height
 	);
