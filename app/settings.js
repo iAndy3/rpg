@@ -1,6 +1,7 @@
 export const 
 	MAP_WIDTH = 30,
 	MAP_HEIGHT = 15,
+	GAME_SPEED = .75,
 	TILES = {
 		0: {
 			type: 'land',
