@@ -38,5 +38,5 @@ function drawMap() {
 	player.draw();
 }
 
-window.addEventListener('keyup', event => Key.onKeyup(event), false);
-window.addEventListener('keydown', event => Key.onKeydown(event), false);
+window.addEventListener('keyup', e => Key.onKeyup(e), false);
+window.addEventListener('keydown', e => Key.onKeydown(e), false);
