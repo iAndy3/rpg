@@ -28,6 +28,13 @@ export function getInitialCoords(map, i) {
 	}
 }
 
+export function resize() {
+	console.log('sf');
+	let canvas = document.getElementById('game');
+	canvas.width = document.body.clientWidth;
+	canvas.height = document.body.clientHeight;
+}
+
 export let Key = {
 	_pressed: {},
 	LEFT: 37,
