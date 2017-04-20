@@ -28,14 +28,13 @@ export function getInitialCoords(map, i) {
 	}
 }
 
-export function resize() {
-	console.log('sf');
+export function handleResize() {
 	let canvas = document.getElementById('game');
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
 }
-
-export let Key = {
+//http://buildnewgames.com/astar/
+export let key = {
 	_pressed: {},
 	LEFT: 37,
 	UP: 38,
@@ -55,17 +54,17 @@ export let Key = {
 export function getPlayer(ctx, img, coords) {
 	return {
 		type: 'player',
-		x: 64,
+		x: 65,
 		y: 0,
 		width: 25,
 		height: 32,
 		positionX: coords.x * 32,
 		positionY: coords.y * 32,
 		draw: function() {
-			if(Key.isDown(Key.UP)) this.positionY -= GAME_SPEED;
-			if(Key.isDown(Key.LEFT)) this.positionX -= GAME_SPEED;
-			if(Key.isDown(Key.DOWN)) this.positionY += GAME_SPEED;
-			if(Key.isDown(Key.RIGHT)) this.positionX += GAME_SPEED;
+			if(key.isDown(key.UP)) this.positionY -= GAME_SPEED;
+			if(key.isDown(key.LEFT)) this.positionX -= GAME_SPEED;
+			if(key.isDown(key.DOWN)) this.positionY += GAME_SPEED;
+			if(key.isDown(key.RIGHT)) this.positionX += GAME_SPEED;
 
 			ctx.drawImage(
 				img, 

@@ -1,6 +1,6 @@
 export const 
-	MAP_WIDTH = 60,
-	MAP_HEIGHT = 31,
+	MAP_WIDTH = 5,
+	MAP_HEIGHT = 5,
 	GAME_SPEED = .75,
 	TILES = {
 		0: {
