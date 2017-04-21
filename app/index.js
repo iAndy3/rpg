@@ -1,20 +1,18 @@
 import _ from 'lodash';
 import { MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT, TILES } from './settings';
-import { getMap, getIndex, getCoords, getInitialCoords, getPlayer, key, handleResize } from './utils';
+import { getMap, getIndex, handleResize } from './utils';
 
 const MAP = getMap(),
-	  INITIAL_COORDS = getInitialCoords(MAP, Math.floor(Math.random() * MAP_WIDTH * MAP_HEIGHT)),
 	  CANVAS = document.getElementById('game');
-let img, ctx, player, cellHovered;	
+let img, ctx, cellHovered;	
 
 window.onload = function() {
 	handleResize();
 	ctx = CANVAS.getContext('2d');
 	img = new Image();
-	img.src = 'http://i.imgur.com/j1drFYg.png';
+	img.src = 'http://i.imgur.com/FU5t5mw.png';
 	img.onload = function() {
 		requestAnimationFrame(drawMap);
-		player = getPlayer(ctx, img, INITIAL_COORDS);
 	}
 }
 
@@ -51,7 +49,6 @@ function drawMap() {
 	}
 
 	requestAnimationFrame(drawMap);
-	player.draw();
 }
 
 function handleClick(e) {
@@ -64,6 +61,7 @@ function handleClick(e) {
 }
 
 function handleHover(e) {
+	console.log('hov');
 	cellHovered = {
 		x: Math.floor(e.pageX/TILE_WIDTH),
 		y: Math.floor(e.pageY/TILE_HEIGHT)
@@ -73,5 +71,3 @@ function handleHover(e) {
 CANVAS.addEventListener('click', handleClick, false);
 CANVAS.addEventListener('mousemove', _.throttle(handleHover, 100), false);
 window.addEventListener('resize', handleResize, false);
-window.addEventListener('keyup', e => key.onKeyup(e), false);
-window.addEventListener('keydown', e => key.onKeydown(e), false);

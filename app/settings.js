@@ -1,6 +1,6 @@
 export const 
-	MAP_WIDTH = 25,
-	MAP_HEIGHT = 25,
+	MAP_WIDTH = 20,
+	MAP_HEIGHT = 20,
 	GAME_SPEED = .75,
 	TILE_WIDTH = 32,
 	TILE_HEIGHT = 32,
@@ -10,8 +10,8 @@ export const
 			x: 0,
 			y: 0,
 			hover: {
-				x: 32,
-				y: 0
+				x: 0,
+				y: 32
 			}
 		},
 		1: {
@@ -19,8 +19,13 @@ export const
 			x: 32,
 			y: 0,
 			hover: {
-				x: 0,
-				y: 0		
+				x: 32,
+				y: 32		
 			}
 		},
+		9: {
+			type: 'player',
+			x: 64,
+			y: 0,			
+		}
 	};
