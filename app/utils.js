@@ -1,4 +1,4 @@
-import { MAP_WIDTH, MAP_HEIGHT, GAME_SPEED } from './settings';
+import { MAP_WIDTH, MAP_HEIGHT, GAME_SPEED, TILE_WIDTH, TILE_HEIGHT } from './settings';
 
 export function getMap() {
 	let map = '';
@@ -58,8 +58,8 @@ export function getPlayer(ctx, img, coords) {
 		y: 0,
 		width: 25,
 		height: 32,
-		positionX: coords.x * 32,
-		positionY: coords.y * 32,
+		positionX: coords.x * TILE_WIDTH,
+		positionY: coords.y * TILE_HEIGHT,
 		draw: function() {
 			if(key.isDown(key.UP)) this.positionY -= GAME_SPEED;
 			if(key.isDown(key.LEFT)) this.positionX -= GAME_SPEED;
