@@ -34,20 +34,21 @@ export function handleResize() {
 	canvas.height = document.body.clientHeight;
 }
 
-export let key = {
-	_pressed: {},
-	LEFT: 37,
-	UP: 38,
-	RIGHT: 39,
-	DOWN: 40,
-	isDown: function(keyCode){
-		return this._pressed[keyCode];
+export let move = {
+	direction: {},
+	LEFT: 'W',
+	UP: 'N',
+	RIGHT: 'E',
+	DOWN: 'S',
+	check: function(p) {
+		return this.direction[p];
 	},
-	onKeydown: function(e){
-		this._pressed[e] = true;
+	to: function(p) {
+		this.clear();
+		this.direction[p] = true;
 	},
-	onKeyup: function(e){
-		delete this._pressed[e];
+	clear: function() {
+		this.direction = {};
 	}
 };
 
@@ -59,14 +60,23 @@ export function getPlayer(ctx, img, map) {
 		y: 0,
 		width: 25,
 		height: 32,
-		positionX: x * TILE_WIDTH,
-		positionY: y * TILE_HEIGHT,
-		draw: function(x) {
-			console.log(x);
-			if(key.isDown(key.UP)) this.positionY -= GAME_SPEED;
-			if(key.isDown(key.LEFT)) this.positionX -= GAME_SPEED;
-			if(key.isDown(key.DOWN)) this.positionY += GAME_SPEED;
-			if(key.isDown(key.RIGHT)) this.positionX += GAME_SPEED;
+		position: {
+			x: x * TILE_WIDTH,
+			y: y * TILE_HEIGHT
+		},
+		draw: function(dir) {
+			if(dir) {
+/*				console.log('Direction:', dir.x * TILE_HEIGHT);
+				console.log('Player:', this.position.x);*/
+				if(this.position.y === dir.y * TILE_HEIGHT && this.position.x === dir.x * TILE_HEIGHT ) {
+					move.clear();
+				}
+/*				console.log(move.direction);*/
+				if(move.check(move.UP)) this.position.y -= GAME_SPEED;
+				if(move.check(move.LEFT)) this.position.x -= GAME_SPEED;
+				if(move.check(move.DOWN)) this.position.y += GAME_SPEED;
+				if(move.check(move.RIGHT)) this.position.x += GAME_SPEED;				
+			}
 
 			ctx.drawImage(
 				img, 
@@ -74,20 +84,11 @@ export function getPlayer(ctx, img, map) {
 				this.y, 
 				this.width, 
 				this.height,
-				this.positionX, 
-				this.positionY, 
+				this.position.x, 
+				this.position.y, 
 				this.width, 
 				this.height
 			);
-		},
-		moveTo: function({x, y}) {
-			console.log('moving to ' + x + "-" + y);
-
-					this.positionX += GAME_SPEED;
-
-				
-				console.log('xx');
-
 		}
 	}
 }
@@ -96,4 +97,5 @@ export function getPlayer(ctx, img, map) {
  * Links
  * http://buildnewgames.com/astar/
  * https://github.com/Kitanga/Tile-World/blob/master/main.js
+ * http://nielsgrootobbink.com/wokflok/jte/jte_article_10.php
 */

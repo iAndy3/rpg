@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT, TILES } from './settings';
-import { getMap, getIndex, getCoords, getInitialCoords, getPlayer, key, handleResize } from './utils';
+import { getMap, getIndex, getCoords, getInitialCoords, getPlayer, move, handleResize } from './utils';
 
 const MAP = getMap(),
 	  CANVAS = document.getElementById('game'),
 	  INITIAL_COORDS = getInitialCoords(MAP, Math.floor(Math.random() * MAP_WIDTH * MAP_HEIGHT));
-let img, ctx, player, cellHovered, cell;	
+let img, ctx, player, hoveredCell, clickedCell;	
 
 window.onload = function() {
 	handleResize();
@@ -19,19 +19,9 @@ window.onload = function() {
 }
 
 function drawMap() {
-	let asd;
-	if(cell) {
-		console.log(`Cell x: ${cell.x*32}\nPlayer x: ${player.positionX}`);
-		asd = cell.x * 32;
-	}
-	if(cell && cell.x * 32 === Math.floor(player.positionX)) {
-		console.log('stop');
-		key.onKeyup('39');
-	}
-
 	for(let r = 0; r < MAP_HEIGHT; r++) {
 		for(let c = 0; c < MAP_WIDTH; c++) {
-			if(cellHovered && r === cellHovered.y && c === cellHovered.x) {
+			if(hoveredCell && r === hoveredCell.y && c === hoveredCell.x) {
 				ctx.drawImage(
 					img, 
 					TILES[MAP[getIndex(c,r)]].hover.x,
@@ -56,27 +46,32 @@ function drawMap() {
 					TILE_HEIGHT
 				);				
 			}
-
 		}
 	}
 
 	requestAnimationFrame(drawMap);
-	player.draw(asd);
+	player.draw(clickedCell);
 }
 
 function handleClick(e) {
-	cell = {
+	clickedCell = {
 		x: Math.floor(e.pageX/TILE_WIDTH),
 		y: Math.floor(e.pageY/TILE_HEIGHT)
 	}
-
-	key.onKeydown('39', cell.x);
-
+	move.clear();
+	if(clickedCell.y * TILE_WIDTH === player.position.y && clickedCell.x * TILE_HEIGHT < player.position.x) {
+		move.to('W');
+	} else if(clickedCell.y * TILE_WIDTH === player.position.y && clickedCell.x * TILE_HEIGHT > player.position.x) {
+		move.to('E');
+	} else if(clickedCell.x * TILE_HEIGHT === player.position.x && clickedCell.y * TILE_WIDTH < player.position.y) {
+		move.to('N');
+	} else if(clickedCell.x * TILE_HEIGHT === player.position.x && clickedCell.y * TILE_WIDTH > player.position.y) {
+		move.to('S');
+	}
 }
 
 function handleHover(e) {
-	console.log('hov');
-	cellHovered = {
+	hoveredCell = {
 		x: Math.floor(e.pageX/TILE_WIDTH),
 		y: Math.floor(e.pageY/TILE_HEIGHT)
 	}
@@ -85,5 +80,3 @@ function handleHover(e) {
 CANVAS.addEventListener('click', handleClick, false);
 CANVAS.addEventListener('mousemove', _.throttle(handleHover, 100), false);
 window.addEventListener('resize', handleResize, false);
-window.addEventListener('keyup', e => key.onKeyup('39'), false);
-window.addEventListener('keydown', e => key.onKeydown('39'), false); 
