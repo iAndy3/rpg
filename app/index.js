@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import { MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT, TILES } from './settings';
-import { getMap, getIndex, handleResize } from './utils';
+import { getMap, getIndex, getCoords, getInitialCoords, getPlayer, key, handleResize } from './utils';
 
 const MAP = getMap(),
-	  CANVAS = document.getElementById('game');
-let img, ctx, cellHovered;	
+	  CANVAS = document.getElementById('game'),
+	  INITIAL_COORDS = getInitialCoords(MAP, Math.floor(Math.random() * MAP_WIDTH * MAP_HEIGHT));
+let img, ctx, player, cellHovered, cell;	
 
 window.onload = function() {
 	handleResize();
@@ -13,10 +14,21 @@ window.onload = function() {
 	img.src = 'http://i.imgur.com/FU5t5mw.png';
 	img.onload = function() {
 		requestAnimationFrame(drawMap);
+		player = getPlayer(ctx, img, MAP);
 	}
 }
 
 function drawMap() {
+	let asd;
+	if(cell) {
+		console.log(`Cell x: ${cell.x*32}\nPlayer x: ${player.positionX}`);
+		asd = cell.x * 32;
+	}
+	if(cell && cell.x * 32 === Math.floor(player.positionX)) {
+		console.log('stop');
+		key.onKeyup('39');
+	}
+
 	for(let r = 0; r < MAP_HEIGHT; r++) {
 		for(let c = 0; c < MAP_WIDTH; c++) {
 			if(cellHovered && r === cellHovered.y && c === cellHovered.x) {
@@ -49,15 +61,17 @@ function drawMap() {
 	}
 
 	requestAnimationFrame(drawMap);
+	player.draw(asd);
 }
 
 function handleClick(e) {
-	let cell = {
+	cell = {
 		x: Math.floor(e.pageX/TILE_WIDTH),
 		y: Math.floor(e.pageY/TILE_HEIGHT)
 	}
-	
-	console.log('we clicked tile '+cell.x+','+cell.y);
+
+	key.onKeydown('39', cell.x);
+
 }
 
 function handleHover(e) {
@@ -71,3 +85,5 @@ function handleHover(e) {
 CANVAS.addEventListener('click', handleClick, false);
 CANVAS.addEventListener('mousemove', _.throttle(handleHover, 100), false);
 window.addEventListener('resize', handleResize, false);
+window.addEventListener('keyup', e => key.onKeyup('39'), false);
+window.addEventListener('keydown', e => key.onKeydown('39'), false); 

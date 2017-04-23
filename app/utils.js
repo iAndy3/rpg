@@ -33,4 +33,67 @@ export function handleResize() {
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
 }
-//http://buildnewgames.com/astar/
+
+export let key = {
+	_pressed: {},
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+	isDown: function(keyCode){
+		return this._pressed[keyCode];
+	},
+	onKeydown: function(e){
+		this._pressed[e] = true;
+	},
+	onKeyup: function(e){
+		delete this._pressed[e];
+	}
+};
+
+export function getPlayer(ctx, img, map) {
+	let {x, y} = getInitialCoords(map, Math.floor(Math.random() * MAP_WIDTH * MAP_HEIGHT));
+	return {
+		type: 'player',
+		x: 65,
+		y: 0,
+		width: 25,
+		height: 32,
+		positionX: x * TILE_WIDTH,
+		positionY: y * TILE_HEIGHT,
+		draw: function(x) {
+			console.log(x);
+			if(key.isDown(key.UP)) this.positionY -= GAME_SPEED;
+			if(key.isDown(key.LEFT)) this.positionX -= GAME_SPEED;
+			if(key.isDown(key.DOWN)) this.positionY += GAME_SPEED;
+			if(key.isDown(key.RIGHT)) this.positionX += GAME_SPEED;
+
+			ctx.drawImage(
+				img, 
+				this.x, 
+				this.y, 
+				this.width, 
+				this.height,
+				this.positionX, 
+				this.positionY, 
+				this.width, 
+				this.height
+			);
+		},
+		moveTo: function({x, y}) {
+			console.log('moving to ' + x + "-" + y);
+
+					this.positionX += GAME_SPEED;
+
+				
+				console.log('xx');
+
+		}
+	}
+}
+
+/*
+ * Links
+ * http://buildnewgames.com/astar/
+ * https://github.com/Kitanga/Tile-World/blob/master/main.js
+*/
