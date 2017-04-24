@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT, TILES } from './settings';
-import { getMap, getIndex, getCoords, getInitialCoords, getPlayer, move, handleResize } from './utils';
+import { getMap, getIndex, getCoords, getInitialCoords, handleResize } from './utils';
+import { getPlayer, move } from './player';
 
 const MAP = getMap(),
 	  CANVAS = document.getElementById('game'),
