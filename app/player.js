@@ -1,4 +1,4 @@
-import { MAP_WIDTH, MAP_HEIGHT, GAME_SPEED, TILE_WIDTH, TILE_HEIGHT } from './settings';
+import { MAP_WIDTH, MAP_HEIGHT, GAME_SPEED, TILE_SIZE } from './settings';
 import { getCoords, getInitialCoords } from './utils';
 
 export let move = {
@@ -25,17 +25,15 @@ export function getPlayer(ctx, img, map) {
 		type: 'player',
 		x: 65,
 		y: 0,
-		width: 25,
-		height: 32,
 		position: {
-			x: x * TILE_WIDTH,
-			y: y * TILE_HEIGHT
+			x: x * TILE_SIZE,
+			y: y * TILE_SIZE
 		},
 		draw: function(dir) {
 			if(dir) {
-/*				console.log('Direction:', dir.x * TILE_HEIGHT);
+/*				console.log('Direction:', dir.x * TILE_SIZE);
 				console.log('Player:', this.position.x);*/
-				if(this.position.y === dir.y * TILE_HEIGHT && this.position.x === dir.x * TILE_HEIGHT ) {
+				if(this.position.y === dir.y * TILE_SIZE && this.position.x === dir.x * TILE_SIZE ) {
 					move.clear();
 				}
 /*				console.log(move.direction);*/
@@ -49,12 +47,12 @@ export function getPlayer(ctx, img, map) {
 				img, 
 				this.x, 
 				this.y, 
-				this.width, 
-				this.height,
+				TILE_SIZE, 
+				TILE_SIZE,
 				this.position.x, 
 				this.position.y, 
-				this.width, 
-				this.height
+				TILE_SIZE, 
+				TILE_SIZE
 			);
 		}
 	}

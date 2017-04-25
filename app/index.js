@@ -1,11 +1,10 @@
 import _ from 'lodash';
-import { MAP_WIDTH, MAP_HEIGHT, TILE_WIDTH, TILE_HEIGHT, TILES } from './settings';
-import { getMap, getIndex, getCoords, getInitialCoords, handleResize } from './utils';
+import { MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, TILES } from './settings';
+import { getMap, getIndex, handleResize } from './utils';
 import { getPlayer, move } from './player';
 
 const MAP = getMap(),
-	  CANVAS = document.getElementById('game'),
-	  INITIAL_COORDS = getInitialCoords(MAP, Math.floor(Math.random() * MAP_WIDTH * MAP_HEIGHT));
+	  CANVAS = document.getElementById('game');
 let img, ctx, player, hoveredCell, clickedCell;	
 
 window.onload = function() {
@@ -27,24 +26,24 @@ function drawMap() {
 					img, 
 					TILES[MAP[getIndex(c,r)]].hover.x,
 					TILES[MAP[getIndex(c,r)]].hover.y,
-					TILE_WIDTH,
-					TILE_HEIGHT,
-					TILE_WIDTH * c,
-					TILE_HEIGHT * r,
-					TILE_WIDTH,
-					TILE_HEIGHT
+					TILE_SIZE,
+					TILE_SIZE,
+					TILE_SIZE * c,
+					TILE_SIZE * r,
+					TILE_SIZE,
+					TILE_SIZE
 				);
 			} else {
 				ctx.drawImage(
 					img, 
 					TILES[MAP[getIndex(c,r)]].x,
 					TILES[MAP[getIndex(c,r)]].y,
-					TILE_WIDTH,
-					TILE_HEIGHT,
-					TILE_WIDTH * c,
-					TILE_HEIGHT * r,
-					TILE_WIDTH,
-					TILE_HEIGHT
+					TILE_SIZE,
+					TILE_SIZE,
+					TILE_SIZE * c,
+					TILE_SIZE * r,
+					TILE_SIZE,
+					TILE_SIZE
 				);				
 			}
 		}
@@ -56,25 +55,25 @@ function drawMap() {
 
 function handleClick(e) {
 	clickedCell = {
-		x: Math.floor(e.pageX/TILE_WIDTH),
-		y: Math.floor(e.pageY/TILE_HEIGHT)
+		x: Math.floor(e.pageX/TILE_SIZE),
+		y: Math.floor(e.pageY/TILE_SIZE)
 	}
 	move.clear();
-	if(clickedCell.y * TILE_WIDTH === player.position.y && clickedCell.x * TILE_HEIGHT < player.position.x) {
+	if(clickedCell.y * TILE_SIZE === player.position.y && clickedCell.x * TILE_SIZE < player.position.x) {
 		move.to('W');
-	} else if(clickedCell.y * TILE_WIDTH === player.position.y && clickedCell.x * TILE_HEIGHT > player.position.x) {
+	} else if(clickedCell.y * TILE_SIZE === player.position.y && clickedCell.x * TILE_SIZE > player.position.x) {
 		move.to('E');
-	} else if(clickedCell.x * TILE_HEIGHT === player.position.x && clickedCell.y * TILE_WIDTH < player.position.y) {
+	} else if(clickedCell.x * TILE_SIZE === player.position.x && clickedCell.y * TILE_SIZE < player.position.y) {
 		move.to('N');
-	} else if(clickedCell.x * TILE_HEIGHT === player.position.x && clickedCell.y * TILE_WIDTH > player.position.y) {
+	} else if(clickedCell.x * TILE_SIZE === player.position.x && clickedCell.y * TILE_SIZE > player.position.y) {
 		move.to('S');
 	}
 }
 
 function handleHover(e) {
 	hoveredCell = {
-		x: Math.floor(e.pageX/TILE_WIDTH),
-		y: Math.floor(e.pageY/TILE_HEIGHT)
+		x: Math.floor(e.pageX/TILE_SIZE),
+		y: Math.floor(e.pageY/TILE_SIZE)
 	}
 }
 

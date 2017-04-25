@@ -1,9 +1,8 @@
 export const 
 	MAP_WIDTH = 20,
 	MAP_HEIGHT = 20,
-	GAME_SPEED = 1,
-	TILE_WIDTH = 32,
-	TILE_HEIGHT = 32,
+	GAME_SPEED = 2,
+	TILE_SIZE = 32,
 	TILES = {
 		0: {
 			type: 'land',

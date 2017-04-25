@@ -1,4 +1,4 @@
-import { MAP_WIDTH, MAP_HEIGHT, GAME_SPEED, TILE_WIDTH, TILE_HEIGHT } from './settings';
+import { MAP_WIDTH, MAP_HEIGHT } from './settings';
 
 export function getMap() {
 	let map = '';
