@@ -3,7 +3,7 @@ import { MAP_WIDTH, MAP_HEIGHT, TILE_SIZE, TILES } from './settings';
 import { getMap, getIndex, handleResize } from './utils';
 import { getPlayer, move } from './player';
 
-const MAP = getMapss(),
+const MAP = getMap(),
 	  CANVAS = document.getElementById('game');
 let img, ctx, player, hoveredCell, clickedCell;	
 
